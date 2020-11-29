@@ -4,6 +4,7 @@ import {Navbar} from "./components/Navbar";
 import {Route, Switch} from "react-router";
 import {Home} from "./pages/Home";
 import {About} from "./pages/About";
+import {Register} from "./pages/Register";
 
 function App() {
   return (
@@ -11,8 +12,15 @@ function App() {
       <Navbar/>
       <div className='container'>
         <Switch>
-          <Route exact path={'/'} component={Home}/>
-          <Route path={'/about'} component={About}/>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route exact path='/about'>
+            <About />
+          </Route>
+          <Route exact path='/auth/register'>
+            <Register />
+          </Route>
         </Switch>
       </div>
     </BrowserRouter>
