@@ -1,8 +1,10 @@
 import React, {useContext, useState} from "react";
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
+import {useHistory} from "react-router-dom";
 
 export const Login = () => {
+  const history = useHistory()
   const auth = useContext(AuthContext)
 
   const {loading, error, request, clearError} = useHttp()
@@ -22,9 +24,7 @@ export const Login = () => {
     try {
       const data = await request('/auth/login', 'POST', {...form})
       auth.login(data.token, data.userId)
-      console.log('Вы авторизованы')
-      console.log(data.token)
-      console.log(auth.token)
+      history.push('/')
     } catch (e) {
       throw e
     }
@@ -58,12 +58,19 @@ export const Login = () => {
             />
           </div>
         </form>
-        <button
-          className="btn btn-primary"
-          onClick={loginHandler}
-        >
-          Войти
-        </button>
+        { !loading ?
+          <button
+            className="btn btn-primary"
+            onClick={loginHandler}
+          >
+            Войти
+          </button>
+          :
+          <button className="btn btn-primary" type="button" disabled>
+            <span className="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true" />
+            Войти
+          </button>
+        }
       </div>
     </div>
   )

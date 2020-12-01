@@ -1,9 +1,13 @@
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import {useHttp} from "../hooks/http.hook";
+import {useHistory} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 export const Register = () => {
-
+  const history = useHistory()
   const {loading, error, request, clearError} = useHttp()
+
+  const auth = useContext(AuthContext)
 
   const [form, setForm] = useState({
     name: '',
@@ -21,7 +25,10 @@ export const Register = () => {
   // регистрация
   const registerHandler = async () => {
     try {
-      const data = await request('/auth/register', 'POST', {...form})
+      const reg = await request('/auth/register', 'POST', {...form})
+      const data = await request('/auth/login', 'POST', {...form})
+      auth.login(data.token, data.userId)
+      history.push('/auth/login')
     } catch (e) {}
   }
 
@@ -75,12 +82,19 @@ export const Register = () => {
             />
           </div>
         </form>
-        <button
-          className="btn btn-primary"
-          onClick={registerHandler}
-        >
-          Зарегистрироваться
-        </button>
+        { !loading ?
+          <button
+            className="btn btn-primary"
+            onClick={registerHandler}
+          >
+            Зарегистрироваться
+          </button>
+          :
+          <button className="btn btn-primary" type="button" disabled>
+            <span className="spinner-grow spinner-grow-sm mr-1" role="status" aria-hidden="true" />
+            Регистрация
+          </button>
+        }
       </div>
     </div>
   )
