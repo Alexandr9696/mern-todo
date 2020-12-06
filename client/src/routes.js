@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route, Switch} from "react-router";
 import {Home} from "./pages/Home";
-import {NoteList} from "./pages/NoteList";
+import {NotePage} from "./pages/NotePage";
 import {Register} from "./pages/Register";
 import {Login} from "./pages/Login";
 
@@ -14,7 +14,7 @@ export const useRoutes = (isAuthenticated) => {
           <Home/>
         </Route>
         <Route exact path='/notes'>
-          <NoteList/>
+          <NotePage/>
         </Route>
       </Switch>
     )

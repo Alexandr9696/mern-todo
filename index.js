@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const config = require('./config')
 const testRouter = require('./routes/testRoutes')
 const authRoutes = require('./routes/authRoutes')
+const noteRoutes = require('./routes/noteRoutes')
 
 const app = express()
 // для распознавания входящего объекта запроса как объекта JSON
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/', testRouter)
 app.use('/auth', authRoutes)
+app.use('/note', noteRoutes)
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
