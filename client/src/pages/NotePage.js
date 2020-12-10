@@ -3,15 +3,13 @@ import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
 import {NoteForm} from "../components/NoteForm";
 import {NoteList} from "../components/NoteList";
-import {useAlert} from "../hooks/alert.hook";
-import {Alert} from "../components/Alert";
+import {AlertContext} from "../context/alert/alertContext";
 
 
 export const NotePage = () => {
   const {token} = useContext(AuthContext)
   const {request} = useHttp()
-  const {alert, hide, show} = useAlert()
-
+  const {show} = useContext(AlertContext)
   const [notes, setNotes] = useState([])
   const [form, setForm] = useState({
     title: ''
@@ -27,7 +25,9 @@ export const NotePage = () => {
         Authorization: `Bearer ${token}`
       })
       setNotes(fetched)
-    } catch (e) {}
+    } catch (e) {
+      show(e.message, 'danger')
+    }
   }, [token, request])
 
   const addNote = async () => {
@@ -35,14 +35,11 @@ export const NotePage = () => {
       const data = await request('/note/add', 'POST', {...form}, {
         Authorization: `Bearer ${token}`
       })
-      setNotes(data)
+      setNotes(data.notes)
       setForm({title: ''})
+      show(data.message, 'success')
     } catch (e) {
-      console.log(e.message, e.type)
-      // show(e.message, e.type)
-      // setTimeout(() => {
-      //   hide()
-      // }, 2000)
+      show(e.message, 'danger')
     }
   }
 
@@ -51,8 +48,11 @@ export const NotePage = () => {
       const data = await request('/note/remove', 'POST', {id}, {
         Authorization: `Bearer ${token}`
       })
-      setNotes(data)
-    } catch (e) {}
+      setNotes(data.notes)
+      show(data.message, 'success')
+    } catch (e) {
+      show(e.message, 'danger')
+    }
   }
 
 
@@ -60,10 +60,8 @@ export const NotePage = () => {
     fetchNotes()
   }, [fetchNotes])
 
-
   return (
     <>
-      <Alert alert={alert} hide={hide}/>
       <NoteForm
         addNote={addNote}
         formHandler={formHandler}

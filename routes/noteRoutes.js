@@ -24,11 +24,12 @@ router.post('/add', auth, async (req, res) => {
 
     const notes = await Note.find({owner: req.user.userId})
 
-    await res.status(200).json(notes)
+    await res.status(200).json({notes, message: 'Заметка успешно создана!'})
 
 
   } catch (e) {
-    res.status(500).json({message: 'Заметка не создана', type: 'error'})
+
+    res.status(500).json({message: 'Заметка не создана'})
   }
 
 })
@@ -41,7 +42,7 @@ router.post('/remove', auth, async (req, res) => {
 
     const notes = await Note.find({owner: req.user.userId})
 
-    await res.status(200).json(notes)
+    await res.status(200).json({notes, message: 'Заметка удалена!'})
 
   } catch (e) {
     res.status(500).json({message: 'Заметка не удалена'})

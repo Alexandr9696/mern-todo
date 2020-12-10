@@ -3,8 +3,6 @@ import {useCallback, useState} from 'react'
 export const useHttp = () => {
   // загрузка
   const [loading, setLoading] = useState(false)
-  // ошибка
-  const [error, setError] = useState(null)
   // запрос
   const request = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true)
@@ -25,16 +23,14 @@ export const useHttp = () => {
 
       setLoading(false)
 
+
       return data
     } catch (e) {
       setLoading(false)
-      setError(e.message)
       throw e
     }
   }, [])
 
-  // очистка ошибок
-  const clearError = useCallback(() => setError(null), [])
 
-  return {loading, error, request, clearError}
+  return {loading, request}
 }

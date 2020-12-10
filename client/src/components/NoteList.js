@@ -3,7 +3,6 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export const NoteList = ({notes, removeNote}) => {
 
-
   if (!notes.length) {
     return <h2>Список заметок пуст</h2>
   }

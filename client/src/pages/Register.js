@@ -5,7 +5,7 @@ import {AuthContext} from "../context/AuthContext";
 
 export const Register = () => {
   const history = useHistory()
-  const {loading, error, request, clearError} = useHttp()
+  const {loading, request} = useHttp()
 
   const auth = useContext(AuthContext)
 

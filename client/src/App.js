@@ -5,6 +5,9 @@ import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {useRoutes} from "./routes";
 import {Loader} from "./components/Loader";
+import {Alert} from "./components/Alert";
+import {AlertState} from "./context/alert/AlertState";
+
 
 function App() {
   const {login, logout, token, userId, ready} = useAuth()
@@ -12,19 +15,22 @@ function App() {
   const routes = useRoutes(isAuthenticated)
 
   if (!ready) {
-    return <Loader />
+    return <Loader/>
   }
 
   return (
     <AuthContext.Provider value={{
       token, login, logout, userId, isAuthenticated
     }}>
-      <BrowserRouter>
-        <Navbar/>
-        <div className='container'>
-          {routes}
-        </div>
-      </BrowserRouter>
+      <AlertState>
+        <BrowserRouter>
+          <Navbar/>
+          <div className='container'>
+            <Alert/>
+            {routes}
+          </div>
+        </BrowserRouter>
+      </AlertState>
     </AuthContext.Provider>
   )
 }
