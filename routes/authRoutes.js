@@ -1,3 +1,5 @@
+const {validationResult} = require('express-validator')
+const {registerValidators, loginValidator} = require('./../utils/validators')
 const {Router} = require('express')
 const bcrypt = require('bcryptjs')
 const config = require('./../config')
@@ -7,37 +9,38 @@ const User = require('./../models/User')
 const router = Router()
 
 // Регистрация
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidators, async (req, res) => {
   try {
     // получение данных из формы
-    const {name, email, password, repassword} = req.body
+    const {name, email, password} = req.body
 
-
-    if (password === repassword) {
-      // шифрование пароля
-      const hashedPassword = await bcrypt.hash(password, 12)
-      // создание пользователя
-      const user = new User({name, email, password: hashedPassword})
-      await user.save()
-
-      res.status(201).json({message: 'Пользователь создан'})
-    } else {
-      return res.status(500).json({message: 'Пароли не совпадают'})
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({message: errors.array()[0].msg})
     }
+
+    // шифрование пароля
+    const hashedPassword = await bcrypt.hash(password, 12)
+    // создание пользователя
+    const user = new User({name, email, password: hashedPassword})
+    await user.save()
+
+    res.status(201).json({message: 'Пользователь создан'})
 
   } catch (e) {
     res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
   }
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginValidator,  async (req, res) => {
   const {email, password} = req.body
 
-  const user = await User.findOne({email})
-
-  if (!user) {
-    return res.status(400).json({message: 'Такой пользователь не найден'})
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({message: errors.array()[0].msg})
   }
+
+  const user = await User.findOne({email})
 
   const isMatch = await bcrypt.compare(password, user.password)
 

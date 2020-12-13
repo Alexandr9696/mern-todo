@@ -2,11 +2,12 @@ import React, {useContext, useState} from "react"
 import {useHttp} from "../hooks/http.hook";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
+import {AlertContext} from "../context/alert/alertContext";
 
 export const Register = () => {
   const history = useHistory()
   const {loading, request} = useHttp()
-
+  const {show} = useContext(AlertContext)
   const auth = useContext(AuthContext)
 
   const [form, setForm] = useState({
@@ -21,15 +22,16 @@ export const Register = () => {
     setForm({...form, [event.target.name]: event.target.value} )
   }
 
-
   // регистрация
   const registerHandler = async () => {
     try {
       const reg = await request('/auth/register', 'POST', {...form})
       const data = await request('/auth/login', 'POST', {...form})
       auth.login(data.token, data.userId)
-      history.push('/auth/login')
-    } catch (e) {}
+      history.push('/')
+    } catch (e) {
+      show(e.message, 'danger')
+    }
   }
 
   return (

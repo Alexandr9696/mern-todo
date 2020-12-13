@@ -2,11 +2,12 @@ import React, {useContext, useState} from "react";
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
 import {useHistory} from "react-router-dom";
+import {AlertContext} from "../context/alert/alertContext";
 
 export const Login = () => {
   const history = useHistory()
   const auth = useContext(AuthContext)
-
+  const {show} = useContext(AlertContext)
   const {loading, request} = useHttp()
 
   const [form, setForm] = useState({
@@ -26,7 +27,7 @@ export const Login = () => {
       auth.login(data.token, data.userId)
       history.push('/')
     } catch (e) {
-      throw e
+      show(e.message, 'danger')
     }
   }
 
