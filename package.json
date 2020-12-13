@@ -9,6 +9,8 @@
     "express-validator": "^6.7.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.17",
+    "nodemailer": "^6.4.17",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemon": "^2.0.6"
   },
   "scripts": {

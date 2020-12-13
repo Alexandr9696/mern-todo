@@ -4,6 +4,8 @@ import {Home} from "./pages/Home";
 import {NotePage} from "./pages/NotePage";
 import {Register} from "./pages/Register";
 import {Login} from "./pages/Login";
+import {Reset} from "./pages/Reset";
+import {PasswordReset} from "./pages/PasswordReset";
 
 
 export const useRoutes = (isAuthenticated) => {
@@ -16,7 +18,7 @@ export const useRoutes = (isAuthenticated) => {
         <Route exact path='/notes'>
           <NotePage/>
         </Route>
-      </Switch>
+       </Switch>
     )
   }
 
@@ -30,6 +32,12 @@ export const useRoutes = (isAuthenticated) => {
       </Route>
       <Route exact path='/auth/login'>
         <Login/>
+      </Route>
+      <Route exact path='/auth/reset'>
+        <Reset />
+      </Route>
+      <Route exact path='/auth/password/:token'>
+        <PasswordReset />
       </Route>
     </Switch>
   )

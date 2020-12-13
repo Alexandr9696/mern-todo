@@ -3,7 +3,6 @@ const path = require('path')
 const { createServer } = require('http')
 const mongoose = require('mongoose')
 const config = require('./config')
-const testRouter = require('./routes/testRoutes')
 const authRoutes = require('./routes/authRoutes')
 const noteRoutes = require('./routes/noteRoutes')
 
@@ -13,7 +12,6 @@ app.use(express.json({extended: true}))
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/', testRouter)
 app.use('/auth', authRoutes)
 app.use('/note', noteRoutes)
 

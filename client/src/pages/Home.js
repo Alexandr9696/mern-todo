@@ -1,21 +1,15 @@
-import React, {useEffect, useState} from 'react'
-
+import React, {useContext} from 'react'
+import {AuthContext} from "../context/AuthContext";
 
 export const Home = () => {
-  const [state, setState] = useState('')
-
-  useEffect(() => {
-    fetch('/about')
-      .then(res => res.json())
-      .then(title => setState(title))
-  })
+  const {name} = useContext(AuthContext)
 
   return (
     <div className="jumbotron jumbotron-fluid">
       <div className="container">
-        <h1 className="display-4">Лучшее React приложение</h1>
-        <h1 className="display-4">{state}</h1>
-        <p className="lead">Версия приложения <strong>1.0.42</strong></p>
+        <h1 className="display-4">Здравствуйте <strong>{name}</strong></h1>
+        <h5 className="display-5">Добро пожаловать в React приложение заметок</h5>
+        <p className="lead">Версия приложения <strong>1.0.0</strong></p>
       </div>
     </div>
   )

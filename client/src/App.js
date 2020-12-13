@@ -10,7 +10,7 @@ import {AlertState} from "./context/alert/AlertState";
 
 
 function App() {
-  const {login, logout, token, userId, ready} = useAuth()
+  const {name, login, logout, token, userId, ready} = useAuth()
   const isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated)
 
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{
-      token, login, logout, userId, isAuthenticated
+      name, token, login, logout, userId, isAuthenticated
     }}>
       <AlertState>
         <BrowserRouter>

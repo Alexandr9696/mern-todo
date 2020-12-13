@@ -1,10 +1,10 @@
 const {body} = require('express-validator')
 const User = require('./../models/User')
-const Note = require('./../models/Note')
+const bcrypt = require('bcryptjs')
 
 exports.registerValidators = [
   body('name')
-    .isLength({min: 3}).withMessage('Имя должно быть минимум из 3 символов')
+    .isLength({min: 2}).withMessage('Имя должно быть минимум из 3 символов')
     .trim(),
   body('email')
     .isEmail().withMessage('Введите корректный email')

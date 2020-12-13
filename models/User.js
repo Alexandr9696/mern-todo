@@ -14,6 +14,8 @@ const schema = new Schema({
     type: String,
     required: true
   },
+  resetToken: String,
+  resetTokenExp: Date,
   notes: [
     {
       type: Schema.Types.ObjectId,
